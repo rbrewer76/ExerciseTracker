@@ -35,12 +35,23 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
 })
 
-
+/*
 app.get("/api/exercise/users", (req, res) => {
   // Get a list of all users in the database
    User.find({}).then(data => res.json(data))
 })
+*/
 
+app.get("/api/exercise/users:username?", (req, res) => {
+  console.log("GET request /api/exercise/users: " +  req.query.username)
+  if (req.query.username === undefined)
+    // Get a list of all users in the database
+    User.find({}).then(data => res.json(data))
+  else 
+    // Get a spcified username
+    User.findOne({username: req.query.username}).then(data => res.json(data))
+})
+  
 
 app.get("/api/exercise/log?:userId?:from?:to?:limit", (req, res) => {
   // Get a users exercise log from the databse
